@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unique Number Selection Form</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      padding: 0;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    form {
+      max-width: 400px;
+      margin: auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+    }
+    label {
+      font-weight: bold;
+      display: block;
+      margin-bottom: 8px;
+    }
+    input, select, button {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 20px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #28a745;
+      color: white;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <h1>Unique Number Selection Form</h1>
+  <form id="uniqueForm">
+    <label for="name">Name</label>
+    <input type="text" id="name" name="name" placeholder="Enter your name" required>
+
+    <label for="size">Size</label>
+    <select id="size" name="size" required>
+      <option value="" disabled selected>Select size</option>
+      <option value="Small">Small</option>
+      <option value="Medium">Medium</option>
+      <option value="Large">Large</option>
+    </select>
+
+    <label for="number">Number</label>
+    <select id="number" name="number" required>
+      <option value="" disabled selected>Select a number</option>
+    </select>
+
+    <button type="submit">Submit</button>
+  </form>
+
+  <script>
+    // Initialize the available numbers
+    let availableNumbers = Array.from({ length: 200 }, (_, i) => i + 1);
+
+    // Populate the "Number" dropdown
+    const numberDropdown = document.getElementById('number');
+    function populateNumbers() {
+      numberDropdown.innerHTML = '<option value="" disabled selected>Select a number</option>';
+      availableNumbers.forEach(number => {
+        const option = document.createElement('option');
+        option.value = number;
+        option.textContent = number;
+        numberDropdown.appendChild(option);
+      });
+    }
+    populateNumbers();
+
+    // Handle form submission
+    const form = document.getElementById('uniqueForm');
+    form.addEventListener('submit', event => {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const size = document.getElementById('size').value;
+      const number = parseInt(document.getElementById('number').value);
+
+      if (!name || !size || isNaN(number)) {
+        alert('Please fill out all fields.');
+        return;
+      }
+
+      // Remove the selected number from the available list
+      availableNumbers = availableNumbers.filter(n => n !== number);
+
+      // Repopulate the dropdown
+      populateNumbers();
+
+      // Log the result (you can connect this to a database or backend)
+      console.log(`Name: ${name}, Size: ${size}, Number: ${number}`);
+      alert(`Thank you, ${name}. You selected number ${number}.`);
+      form.reset();
+    });
+  </script>
+</body>
+</html>
